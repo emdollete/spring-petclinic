@@ -4,8 +4,8 @@ pipeline {
        stages {     
            stage('Maven Install') {
 	steps {
-					         sh 'mvn clean install'
-						        }
-							     }
-							        }
-								 }
+	sh 'mvn clean install -DskipTests'
+	 }
+ }
+ }	
+ }
