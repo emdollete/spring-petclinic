@@ -8,20 +8,15 @@ pipeline {
            sh 'mvn clean install -DskipTests'
 	      }
 	        }
-		  stage('Docker Build') {
+		  stage('Docker Build and Push') {
 		  agent {label 'docker'}
 		        steps {
+				withCredentials([usernamePassword(credentialsId: 'dockerhub-test', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+				sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
 			    sh 'docker build -f ./Dockerfile -t emdollete/spring-petclinic:latest .'
+				sh 'docker push emdollete/spring-petclinic:latest'
+				}
 			       }
 			         }
-		 stage('Docker Push') {
-         agent {label 'docker'}
-         steps {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub-test', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push emdollete/spring-petclinic:latest'
-				  }
-				  }
-}
 }
 }
