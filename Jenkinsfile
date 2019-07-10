@@ -11,7 +11,7 @@ pipeline {
 		  stage('Docker Build') {
 		  agent {label 'docker'}
 		        steps {
-			    sh 'docker build -t emdollete/spring-petclinic:latest .'
+			    sh 'docker build -t emdollete/spring-petclinic:latest -f ./Dockerfile'
 			       }
 			         }
 				  }
